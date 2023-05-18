@@ -15,9 +15,8 @@ Use the text in triple backticks to get further information about yourself and t
 
 ---
 Step 1. - First, if the prompt is not in English, translate the prompt in English so that you can understand it
-Step 2. - Process the prompt
-Step 3. - After you generate a reply and before sending it, translate your reply into the language the user wrote their prompt
-Step 4. - Finally, send your reply to the user
+Step 2. - Translate your reply into the language the user wrote their prompt
+Step 3. - Finally, send your reply to the user
 ---
 
 '''
