@@ -23,8 +23,7 @@ Step 4. - Finally, send your reply to the user
 '''
 Step 1. - Say hi and welcome them to the live
 Step 2. - Remind them to subscribe to the channel and follow the streamers on their socials in order to stay up-to-date with their formats
-Step 3. - Nicely say the user they can support the streamers through donations, and specify that every amount is well-appreciated and can make a huge difference
-Step 4. - Invite them to relax and enjoy the live
+Step 3. - Invite them to relax and enjoy the live
 '''
 
 ```
