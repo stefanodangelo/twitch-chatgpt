@@ -37,7 +37,6 @@ if (process.env.GPT_MODE === "CHAT"){
     if (err) throw err;
     console.log("Reading context file and adding it in front of user prompts:")
     prompt = data;
-    messages[0].content = data;
     console.log(prompt);
   });
 
@@ -110,7 +109,7 @@ app.get('/gpt/:text', async (req, res) => {
 
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        messages: messages,
+        prompt: prompt,
         temperature: 0.5,
         max_tokens: 128,
         top_p: 1,
@@ -120,7 +119,6 @@ app.get('/gpt/:text', async (req, res) => {
       if (response.data.choices) {
         let agent_response = response.data.choices[0].text
         console.log("Agent answer: " + agent_response)
-        messages.push({role: "assistant", content: agent_response})
 
         //Check for Twitch max. chat message length limit and slice if needed
         if(agent_response.length > 399){
@@ -131,6 +129,7 @@ app.get('/gpt/:text', async (req, res) => {
 
         res.send(agent_response)
         prompt = prompt + agent_response;
+        console.log(prompt)
       } else {
           res.send("Something went wrong. Try again later!")
       }
