@@ -6,6 +6,9 @@ const { promisify } = require('util')
 const readFile = promisify(fs.readFile)
 const GPT_MODE = process.env.GPT_MODE
 
+console.log("GPT_MODE is " + GPT_MODE)
+console.log("History length is " + process.env.HISTORY_LENGTH)
+
 let prompt = "You are a helpful Twitch Chatbot."
 
 const messages = [
@@ -21,9 +24,6 @@ const bot_answers = [
 if (!["LIMITED", "FULL", "PROMPT"].includes(GPT_MODE)) {
     throw new Error('Unknown parameter GPT_MODE. Please, use one of the following:\nLIMITED\nFULL\nPROMPT\n')
 }
-
-console.log("GPT_MODE is " + GPT_MODE)
-console.log("History length is " + process.env.HISTORY_LENGTH)
 
 app.use(express.json({extended: true, limit: '1mb'}))
 
