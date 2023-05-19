@@ -28,6 +28,7 @@ if (process.env.GPT_MODE === "CHAT"){
     if (err) throw err;
     console.log("Reading context file and adding it as system level message for the agent.")
     messages[0].content = data;
+    console.log(messages[0].content);
   });
 
 } else {
