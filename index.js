@@ -32,8 +32,8 @@ if (!["LIMITED", "FULL", "PROMPT"].includes(GPT_MODE)) {
         console.log("Reading context file and adding it as system level message for the agent.")
         prompt = data;
         console.log(prompt);
+        messages[0].content = prompt;
     });
-    messages[0].content = prompt;
 }
 
 app.use(express.json({extended: true, limit: '1mb'}))
