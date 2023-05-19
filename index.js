@@ -103,6 +103,8 @@ app.get('/gpt/:text', async (req, res) => {
 
     const openai = new OpenAIApi(configuration);      
     
+    var response;
+  
     if(user_prompts.includes(text)){
         res.send(bot_answers[user_prompts.indexOf(text)])
     } else if (GPT_MODE !== "PROMPT"){
@@ -123,7 +125,7 @@ app.get('/gpt/:text', async (req, res) => {
           }
         }
       
-        const response = await openai.createChatCompletion({
+        response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: messages,
             temperature: 0.5,
@@ -136,7 +138,7 @@ app.get('/gpt/:text', async (req, res) => {
         //PROMPT MODE EXECUTION
         prompt = prompt + "\n\nQ:" + text + "\nA:";
 
-        const response = await openai.createCompletion({
+        response = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: prompt,
             temperature: 0.5,
