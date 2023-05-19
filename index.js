@@ -95,7 +95,6 @@ app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
     console.log(req.params)
     console.log(text)
-    //const user = req.params.user
     const { Configuration, OpenAIApi } = require("openai");
 
     const configuration = new Configuration({
@@ -112,7 +111,6 @@ app.get('/gpt/:text', async (req, res) => {
         //CHAT MODE EXECUTION
    
         //Add user message to  messages
-        //messages.push({role: "user", content: user+":"+text})
         messages.push({role: "user", content: text})
         user_prompts.push(text)
         
