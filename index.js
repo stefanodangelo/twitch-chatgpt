@@ -8,11 +8,13 @@ const GPT_MODE = process.env.GPT_MODE
 
 let file_context = "You are a helpful Twitch Chatbot."
 
-const messages = [];
+const messages = [
+  {role: "system", content: "You are a helpful Twitch Chatbot."}
+];
 
 console.log("GPT_MODE is " + GPT_MODE)
 console.log("History length is " + process.env.HISTORY_LENGTH)
-//console.log("OpenAI API Key:" + process.env.OPENAI_API_KEY)
+console.log("OpenAI API Key:" + process.env.OPENAI_API_KEY)
 
 app.use(express.json({extended: true, limit: '1mb'}))
 
@@ -21,11 +23,24 @@ app.all('/', (req, res) => {
     res.send('Yo!')
 })
 
-fs.readFile("./file_context.txt", 'utf8', function(err, data) {
+if (process.env.GPT_MODE === "CHAT"){
+
+  fs.readFile("./file_context.txt", 'utf8', function(err, data) {
     if (err) throw err;
     console.log("Reading context file and adding it as system level message for the agent.")
-    messages.push({role: "system", content: data})
-});
+    messages[0].content = data;
+  });
+
+} else {
+
+  fs.readFile("./file_context.txt", 'utf8', function(err, data) {
+    if (err) throw err;
+    console.log("Reading context file and adding it in front of user prompts:")
+    file_context = data;
+    console.log(file_context);
+  });
+
+}
 
 app.get('/gpt/:text', async (req, res) => {
     
@@ -67,8 +82,9 @@ app.get('/gpt/:text', async (req, res) => {
       });
     
       if (response.data.choices) {
-        let agent_response = response.data.choices[0].message.content
-
+       //let agent_response = response.data.choices[0].message.content
+        let agent_response = response.data.choices[0].text
+        
         console.log ("Agent answer: " + agent_response)
         messages.push({role: "assistant", content: agent_response})
 
@@ -86,13 +102,12 @@ app.get('/gpt/:text', async (req, res) => {
 
     } else {
       //PROMPT MODE EXECUTION
-      //const prompt = file_context + "\n\nQ:" + text + "\nA:";
+      const prompt = file_context + "\n\nQ:" + text + "\nA:";
       console.log("User Input: " + text)
 
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        //prompt: prompt,
-        messages: messages,
+        prompt: prompt,
         temperature: 0.5,
         max_tokens: 128,
         top_p: 1,
@@ -110,8 +125,6 @@ app.get('/gpt/:text', async (req, res) => {
           }
 
           res.send(agent_response)
-          
-          prompt = prompt + agent_response
       } else {
           res.send("Something went wrong. Try again later!")
       }
