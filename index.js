@@ -62,10 +62,11 @@ function count_user_messages(){
 
 function send_answer(response, res){
     if (response.data.choices) {
+        var agent_response;
         if(GPT_MODE === "PROMPT"){
-            let agent_response = response.data.choices[0].text
+            agent_response = response.data.choices[0].text
         } else{
-            let agent_response = response.data.choices[0].message.content
+            agent_response = response.data.choices[0].message.content
         }
         
         console.log("Agent answer: " + agent_response)
