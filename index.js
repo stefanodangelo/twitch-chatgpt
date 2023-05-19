@@ -87,7 +87,7 @@ function send_answer(response, res){
 }
 
 
-app.get('/gpt/user:text', async (req, res) => {
+app.get('/gpt/:text', async (req, res) => {
     
     //The agent should receive Username:Message in the text to identify conversations with different users in his history. 
     
