@@ -6,7 +6,7 @@ const { promisify } = require('util')
 const readFile = promisify(fs.readFile)
 const GPT_MODE = process.env.GPT_MODE
 
-let file_context = "You are a helpful Twitch Chatbot."
+let prompt = "You are a helpful Twitch Chatbot."
 
 const messages = [
   {role: "system", content: "You are a helpful Twitch Chatbot."}
@@ -36,8 +36,8 @@ if (process.env.GPT_MODE === "CHAT"){
   fs.readFile("./file_context.txt", 'utf8', function(err, data) {
     if (err) throw err;
     console.log("Reading context file and adding it in front of user prompts:")
-    file_context = data;
-    console.log(file_context);
+    prompt = data;
+    console.log(prompt);
   });
 
 }
@@ -87,7 +87,7 @@ app.get('/gpt/:text', async (req, res) => {
       if (response.data.choices) {
         let agent_response = response.data.choices[0].message.content
         
-        console.log ("Agent answer: " + agent_response)
+        console.log("Agent answer: " + agent_response)
         messages.push({role: "assistant", content: agent_response})
 
         //Check for Twitch max. chat message length limit and slice if needed
@@ -104,7 +104,7 @@ app.get('/gpt/:text', async (req, res) => {
 
     } else {
       //PROMPT MODE EXECUTION
-      const prompt = file_context + "\n\nQ:" + text + "\nA:";
+      prompt = prompt + "\n\nQ:" + text + "\nA:";
       console.log("User Input: " + text)
 
       const response = await openai.createCompletion({
@@ -118,7 +118,7 @@ app.get('/gpt/:text', async (req, res) => {
       });
       if (response.data.choices) {
         let agent_response = response.data.choices[0].text
-          console.log ("Agent answer: " + agent_response)
+          console.log("Agent answer: " + agent_response)
           //Check for Twitch max. chat message length limit and slice if needed
           if(agent_response.length > 399){
             console.log("Agent answer exceeds twitch chat limit. Slicing to first 399 characters.")
@@ -127,6 +127,7 @@ app.get('/gpt/:text', async (req, res) => {
           }
 
           res.send(agent_response)
+          prompt = prompt + agent_response;
       } else {
           res.send("Something went wrong. Try again later!")
       }
