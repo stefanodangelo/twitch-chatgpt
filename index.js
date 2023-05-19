@@ -71,7 +71,7 @@ app.get('/gpt/:text', async (req, res) => {
     
       console.log("Messages: ")
       console.dir(messages)
-      console.log("User: ", user)
+      //console.log("User: ", user)
       console.log("User Input: " + text)
 
       const response = await openai.createChatCompletion({
