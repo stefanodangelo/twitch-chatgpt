@@ -23,20 +23,10 @@ const bot_answers = [
 
 if (!["LIMITED", "FULL", "PROMPT"].includes(GPT_MODE)) {
     throw new Error('Unknown parameter GPT_MODE. Please, use one of the following:\nLIMITED\nFULL\nPROMPT\n')
-}
-
-app.use(express.json({extended: true, limit: '1mb'}))
-
-app.all('/', (req, res) => {
-    console.log("Just got a request!")
-    res.send('Yo!')
-})
-
-
-function load_context() {
+} else {
     const file = "./file_context.txt"
     const encoding = 'utf-8'
-    
+
     fs.readFile(file, encoding, function(err, data) {
         if (err) throw err;
         console.log("Reading context file and adding it as system level message for the agent.")
@@ -45,6 +35,13 @@ function load_context() {
     });
     messages[0].content = prompt;
 }
+
+app.use(express.json({extended: true, limit: '1mb'}))
+
+app.all('/', (req, res) => {
+    console.log("Just got a request!")
+    res.send('Yo!')
+})
 
 
 function count_user_messages(){
