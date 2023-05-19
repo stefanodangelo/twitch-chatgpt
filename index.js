@@ -118,8 +118,8 @@ app.get('/gpt/:text', async (req, res) => {
         
         if (GPT_MODE === "LIMITED") {
             //Check if message history is exceeded
-            if (count_user_messages > process.env.HISTORY_LENGTH){
-                console.log('Message amount in history exceeded. Removing oldest   user and agent messages.')
+            if (count_user_messages() > process.env.HISTORY_LENGTH){
+                console.log('Message amount in history exceeded. Removing oldest user and agent messages.')
                 messages.splice(1,2)
                 user_prompts.splice(1,2)
                 bot_answers.splice(1,2)
