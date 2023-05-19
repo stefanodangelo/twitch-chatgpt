@@ -24,9 +24,7 @@ app.all('/', (req, res) => {
 fs.readFile("./file_context.txt", 'utf8', function(err, data) {
     if (err) throw err;
     console.log("Reading context file and adding it as system level message for the agent.")
-    messages = [
-        {role: "system", content: data}
-    ];
+    messages.push({role: "system", content: data})
 });
 
 app.get('/gpt/:text', async (req, res) => {
