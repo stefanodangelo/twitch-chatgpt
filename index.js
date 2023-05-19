@@ -87,6 +87,7 @@ function send_answer(response, res){
     }
 }
 
+load_context()
 
 app.get('/gpt/:text', async (req, res) => {
     
