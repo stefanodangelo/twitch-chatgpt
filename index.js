@@ -119,18 +119,18 @@ app.get('/gpt/:text', async (req, res) => {
       });
       if (response.data.choices) {
         let agent_response = response.data.choices[0].text
-          console.log("Agent answer: " + agent_response)
-          messages.push({role: "assistant", content: agent_response})
-        
-          //Check for Twitch max. chat message length limit and slice if needed
-          if(agent_response.length > 399){
-            console.log("Agent answer exceeds twitch chat limit. Slicing to first 399 characters.")
-            agent_response = agent_response.substring(0, 399)
-            console.log ("Sliced Agent answer: " + agent_response)
-          }
+        console.log("Agent answer: " + agent_response)
+        messages.push({role: "assistant", content: agent_response})
 
-          res.send(agent_response)
-          prompt = prompt + agent_response;
+        //Check for Twitch max. chat message length limit and slice if needed
+        if(agent_response.length > 399){
+          console.log("Agent answer exceeds twitch chat limit. Slicing to first 399 characters.")
+          agent_response = agent_response.substring(0, 399)
+          console.log ("Sliced Agent answer: " + agent_response)
+        }
+
+        res.send(agent_response)
+        prompt = prompt + agent_response;
       } else {
           res.send("Something went wrong. Try again later!")
       }
