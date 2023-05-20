@@ -99,11 +99,11 @@ app.get('/gpt/:text', async (req, res) => {
     const openai = new OpenAIApi(configuration);
     var response;
     const colons = ':'
-
+    const previous_answer_found = user_prompts.includes(text) 
     text = text.slice(0, text.indexOf(colons)) + colons + ' ' + text.slice(text.indexOf(colons)+1).split('+').join(' ')
     console.log(text)
   
-    if(user_prompts.includes(text)){
+    if(previous_answer_found){
         console.log("Sending answer retrieved from past prompts")
         res.send(bot_answers[user_prompts.indexOf(text)])
     } else if (GPT_MODE !== "PROMPT"){
@@ -146,8 +146,9 @@ app.get('/gpt/:text', async (req, res) => {
             presence_penalty: 0,
         });
     }
-    
-    send_answer(response, res)
+    if(!previous_answer_found){
+        send_answer(response, res)
+    }
 })
 
 
