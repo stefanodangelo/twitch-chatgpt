@@ -104,6 +104,7 @@ app.get('/gpt/:text', async (req, res) => {
     console.log(text)
   
     if(user_prompts.includes(text)){
+        console.log("Sending answer retrieved from past prompts")
         res.send(bot_answers[user_prompts.indexOf(text)])
     } else if (GPT_MODE !== "PROMPT"){
         //CHAT MODE EXECUTION
