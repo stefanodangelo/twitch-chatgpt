@@ -90,6 +90,7 @@ app.get('/gpt/:text', async (req, res) => {
     //The agent should receive Username:Message in the text to identify conversations with different users in his history. 
     
     let text = req.params.text
+    const colons = ':'
     text = text.slice(0, text.indexOf(colons)) + colons + ' ' + text.slice(text.indexOf(colons)+1).split('+').join(' ')
     console.log(text)
   
@@ -101,7 +102,6 @@ app.get('/gpt/:text', async (req, res) => {
 
     const openai = new OpenAIApi(configuration);
     var response;
-    const colons = ':'
     const previous_answer_found = user_prompts.includes(text) 
   
     if(previous_answer_found){
