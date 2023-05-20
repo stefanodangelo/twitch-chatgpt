@@ -105,8 +105,11 @@ app.get('/gpt/:text', async (req, res) => {
     const previous_answer_found = user_prompts.includes(text) 
   
     if(previous_answer_found){
+        const answer = bot_answers[user_prompts.indexOf(text)]
+        
         console.log("Sending answer retrieved from past prompts")
-        res.send(bot_answers[user_prompts.indexOf(text)])
+        console.log(answer)
+        res.send(answer)
     } else if (GPT_MODE !== "PROMPT"){
         //CHAT MODE EXECUTION
    
@@ -133,6 +136,7 @@ app.get('/gpt/:text', async (req, res) => {
             frequency_penalty: 0,
             presence_penalty: 0,
         });
+        send_answer(response, res)
     } else {
         //PROMPT MODE EXECUTION
         prompt = prompt + "\n\nQ:" + text + "\nA:";
@@ -146,8 +150,6 @@ app.get('/gpt/:text', async (req, res) => {
             frequency_penalty: 0,
             presence_penalty: 0,
         });
-    }
-    if(!previous_answer_found){
         send_answer(response, res)
     }
 })
